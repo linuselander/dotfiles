@@ -1,8 +1,8 @@
 set nocompatible
-filetype off
-
 let mapleader=','                                     " Use , as leader key. Set before plugins load
+filetype off                                          " Turn off before loading plugins
 
+" Load Plugins {{{
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -18,57 +18,64 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()
+"}}}
 
-" Color Compatibility Settings
+filetype plugin indent on                             " Turn back on after loading plugins
+
+" Colors {{{
+syntax on
+colorscheme gruvbox
+set background=dark
 if &term =~ '256color'
   " disable Background Color Erase (BCE) so that color schemes
   " render properly when inside 256-color tmux and GNU screen.
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   set t_ut=
 endif
+"}}}
 
-" Theming
-syntax on
-colorscheme gruvbox
-set background=dark
-set colorcolumn=120                                   " Adds vertical line at 120 chars
-
-" Theming Vim Airline
-let g:airline_theme='gruvbox'
-let g:airline_symbols_ascii = 1                       " Use plain chars in Airline UI
-let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
-let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
-let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
-set noshowmode                                        " Airline already shows mode
-set laststatus=2                                      " Always show statusline for Airline to work
-
+" UI {{{
+set colorcolumn=120                                   " Add vertical line at 120 chars
 set cursorline                                        " Highlight current line
 set relativenumber                                    " Line numbers originate from cursor position
 set number                                            " Current line shows actual line number
 set foldcolumn=1                                      " Show column for fold markers
+set wrap                                              " Wrap text when wider than window
+set linebreak                                         " Wrap text according to 'breakat' instead of anywhere
+set breakindent                                       " Indent wrapped text to match indentation of current line
+set showbreak=+++                                     " Prefix wrapped text
+" }}}
+
+" Behavior {{{
 set foldmethod=syntax                                 " Base folding on current file syntax
 set visualbell                                        " Silent error messages
 
 set nobackup                                          " Don't write permanent backups when overwriting files
 set noswapfile                                        " Don't create .swp-files
 
-set wildmenu
-set wildignore+=*/node_modules/*
-set path+=**
+set wildmenu                                          " Use wildmenu for completion in command mode
+set wildignore+=*/node_modules/*                      " Exclude folders from completions
+set path+=**                                          " Allow recursive search for completions
 
 set tabstop=2 expandtab shiftwidth=2 smarttab         " Use 2 spaces for tabs
 set hlsearch
 
 set textwidth=0                                       " Never auto-insert hard line breaks
-set wrap                                              " Wrap text when wider than window
-set linebreak                                         " Wrap text according to 'breakat' instead of anywhere
-set breakindent                                       " Indent wrapped text to match indentation of current line
-set showbreak=+++                                     " Prefix wrapped text
+" }}}
 
-" Remaps
+" Plugins {{{
+" Vim Airline {{{
+let g:airline_symbols_ascii = 1                       " Use plain chars in Airline UI
+let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
+let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
+let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
+set noshowmode                                        " Airline already shows mode
+set laststatus=2                                      " Always show statusline for Airline to work
+"}}}
+"}}}
 
+" Mappings {{{
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -80,3 +87,8 @@ nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
+" }}}
+
+
+setlocal foldmethod=marker                            " When editing this file use markers for folding
+
