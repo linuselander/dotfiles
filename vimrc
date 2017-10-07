@@ -15,6 +15,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'vim-syntastic/syntastic'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 
@@ -70,8 +71,14 @@ let g:airline_symbols_ascii = 1                       " Use plain chars in Airli
 let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
 let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
 let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
+let g:airline#extensions#syntastic#enabled = 1
 set noshowmode                                        " Airline already shows mode
 "}}}
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 "}}}
 
 " Mappings {{{
