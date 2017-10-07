@@ -71,7 +71,6 @@ let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buff
 let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
 let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
 set noshowmode                                        " Airline already shows mode
-set laststatus=2                                      " Always show statusline for Airline to work
 "}}}
 "}}}
 
