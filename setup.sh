@@ -3,25 +3,6 @@
 files=( "vimrc" "tmux.conf" )
 backup_folder=$(pwd)'/backup'
 
-# Print error message and exits if script is executed from wrong path
-invalid_path () {
-  echo INVALID PATH
-  echo You must run the script from the root directory of the repository, ie.
-  echo ~$ cd '~/dotfiles'
-  echo '~/dotfiles$' ./setup.sh
-  exit 1
-}
-
-# Validates the path from which the script is executed
-verify_runtime_path () {
-  local valid_path='./'${0##*/}
-  local actual_path=$0
-  if [ $actual_path != $valid_path ]
-  then
-    invalid_path
-  fi
-}
-
 # If script is executed without parameters we only print help info
 print_help () {
   echo
@@ -41,9 +22,35 @@ print_help () {
   echo
 }
 
+# Print error message and exits if script is executed from wrong path
+invalid_path () {
+  echo INVALID PATH
+  echo You must run the script from the root directory of the repository, ie.
+  echo ~$ cd '~/dotfiles'
+  echo '~/dotfiles$' ./setup.sh
+  exit 1
+}
+
+# Validates the path from which the script is executed
+verify_runtime_path () {
+  local valid_path='./'${0##*/}
+  local actual_path=$0
+  if [ $actual_path != $valid_path ]
+  then
+    invalid_path
+  fi
+}
+
+install_vundle () {
+  local dir=$HOME/.vim/bundle/Vundle.vim
+  if [ ! -d "$dir" ]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git $dir
+    vim +PluginInstall +qall
+  fi
+}
+
 # Performs backup and creates symlinks
 install () {
-
   for file in $@; do
     dotfile=$HOME'/.'$file
     targetfile=$(pwd)'/'$file
@@ -56,11 +63,11 @@ install () {
     ln -s $targetfile $dotfile
   done
 
+  install_vundle
 }
 
 # Removes symlinks and restores backup
 uninstall () {
-
   for file in $@; do
     dotfile=$HOME'/.'$file
     bakfile=$backup_folder'/.'$file
@@ -77,7 +84,6 @@ uninstall () {
       echo 'Could not find any backup for '$dotfile
     fi
   done
-
 }
 
 if [ $1 ]
