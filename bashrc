@@ -57,42 +57,31 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-function git_status () {
-  local _return_value=$1
-  local _cmd="$(git status --porcelain 2> /dev/null)"
-  if [ -z "$_cmd" ]; then
-    local _git_status_return=''
-  else
-    local _git_status_return='*'
-  fi
-  eval $_return_value=\$_git_status_return
-}
+function git_info () {
+  local _git_status=$(git status --porcelain 2> /dev/null) || return
+  local _git_branch=$(git branch 2> /dev/null) || return
 
-#function get_git_status () {
-#  local _git_status="$(git status --porcelain 2> /dev/null)"
-#  if [[ ! -z "$_git_status" ]]; then
-#    echo '*'
-#  fi
-#}
+  branch_name() {
+    sed -n 's/\* //p' <<< "$_git_branch"
+  }
 
-function get_git_branch () {
-  local _git_branch="$(git branch 2> /dev/null)"
-  local _git_status_text
-  git_status _git_status
-  local _regex="\*\ ([^\ ]+)"
-  if [[ "$_git_branch" =~ $_regex ]]; then
-    echo '('${BASH_REMATCH[1]}"$_git_status"') '
+  local _git_color="\033[00;32m"
+  if [[ ! -z "$_git_status" ]]; then
+    _git_color="\033[00;31m"
+    local _git_text='*'
   fi
-}
+
+  echo -e "$_git_color($(branch_name)$_git_text) "
+} 
 
 function color_my_prompt {
     local __user_and_host="\[\033[01;34m\]\u@\h"
     local __cur_location="\[\033[00;34m\]\w"
-    local __git_branch_color="\[\033[00;32m\]"
     local __prompt_tail="\[\033[00m\]$"
     local __last_color="\[\033[00m\]"
-    PS1="$__user_and_host $__cur_location $__git_branch_color\$(get_git_branch)$__prompt_tail$__last_color "
+    PS1="$__user_and_host $__cur_location \$(git_info)$__prompt_tail$__last_color "
 }
+
 if [ "$color_prompt" = yes ]; then
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     color_my_prompt
