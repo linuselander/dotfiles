@@ -60,6 +60,7 @@ fi
 blue="\033[00;34m"
 green="\033[00;32m"
 red="\033[00;31m"
+yellow="\033[00;33m"
 blue_bold="\033[01;34m"
 reset_color="\033[00m"
 
@@ -89,12 +90,23 @@ function prompt () {
       sed -n 's/## \([a-zA-Z0-9_-/]*\).*/\1/p' <<< "$_git_status"
     }
 
+    branch_compared() {
+      sed -n \
+        -e 's/## .*\[\(\(ahead\|behind\) \([0-9]*\)\)\]/\2\3/' \
+        -e 's/ahead/\ \+/p' \
+        -e 's/behind/\ \-/p' <<< "$_git_status"
+    }
+
     branch_color() {
       if [ "$_use_color" = yes ]; then
         if [ "$_is_dirty" = yes ]; then
           echo -e "$red"
         else
-          echo -e "$green"
+          if [[ -z "$(branch_compared)" ]]; then
+            echo -e "$green"
+          else
+            echo -e "$yellow"
+          fi
         fi
       fi
     }
@@ -105,7 +117,7 @@ function prompt () {
       fi
     }
 
-    echo "$(branch_color)($(branch_name)$(branch_status)) "
+    echo "$(branch_color)($(branch_name)$(branch_status)$(branch_compared)) "
 #}}}
   } 
   
