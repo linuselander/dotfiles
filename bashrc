@@ -68,7 +68,7 @@ function prompt () {
   local _use_color="$1"
 
   function git_prompt () {
-
+#{{{
     local _use_color="$1"
     local _git_branch=$(git branch 2> /dev/null) || return
 
@@ -103,23 +103,23 @@ function prompt () {
     }
 
     echo "$(branch_color)($(branch_name)$(branch_status)) "
-
+#}}}
   } 
   
   local __user_and_host="\[\033[01;34m\]\u@\h"
   local __cur_location="\[\033[00;34m\]\w"
   local __prompt_tail="\[\033[00m\]$"
   local __last_color="\[\033[00m\]"
-  ps1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color "
+  PS1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color "
 
 }
 
 
 if [ "$color_prompt" = yes ]; then
-    #ps1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     prompt "$color_prompt"
 else
-    ps1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 #configure_prompt
 unset color_prompt force_color_prompt
