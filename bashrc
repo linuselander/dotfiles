@@ -68,19 +68,25 @@ function prompt () {
   local _use_color="$1"
 
   function git_prompt () {
+
     local _use_color="$1"
-    local _git_status=$(git status --porcelain 2> /dev/null) || return
     local _git_branch=$(git branch 2> /dev/null) || return
+
+    if [[ -z "$_git_branch" ]]; then
+      return
+    fi
+
+    local _git_status=$(git status --porcelain 2> /dev/null) || return
 
     if [[ ! -z "$_git_status" ]]; then
       local _is_dirty=yes
     fi
 
-    function branch_name() {
+    branch_name() {
       sed -n 's/\* //p' <<< "$_git_branch"
     }
 
-    function branch_color() {
+    branch_color() {
       if [ "$_use_color" = yes ]; then
         if [ "$_is_dirty" = yes ]; then
           echo -e "$red"
@@ -90,35 +96,36 @@ function prompt () {
       fi
     }
 
-    function branch_status() {
-        if [ "$_is_dirty" = yes ]; then
-          echo '*'
-        fi
+    branch_status() {
+      if [ "$_is_dirty" = yes ]; then
+        echo '*'
+      fi
     }
 
     echo "$(branch_color)($(branch_name)$(branch_status)) "
+
   } 
   
   local __user_and_host="\[\033[01;34m\]\u@\h"
   local __cur_location="\[\033[00;34m\]\w"
   local __prompt_tail="\[\033[00m\]$"
   local __last_color="\[\033[00m\]"
-  PS1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color "
+  ps1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color "
 
 }
 
 
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    #ps1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     prompt "$color_prompt"
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    ps1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 #configure_prompt
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
+# if this is an xterm set the title to user@host:dir
+case "$term" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
