@@ -70,20 +70,23 @@ function prompt () {
   function git_prompt () {
 #{{{
     local _use_color="$1"
-    local _git_branch=$(git branch 2> /dev/null) || return
 
-    if [[ -z "$_git_branch" ]]; then
+    local _git_status=$(git status -s -b --porcelain 2> /dev/null) || return
+
+    if [[ -z "$_git_status" ]]; then
       return
     fi
 
-    local _git_status=$(git status --porcelain 2> /dev/null) || return
+    branch_changes() {
+      grep -c '^[^#].*' <<< "$_git_status"
+    }
 
-    if [[ ! -z "$_git_status" ]]; then
+    if [ $(branch_changes) -gt 0 ]; then
       local _is_dirty=yes
     fi
 
     branch_name() {
-      sed -n 's/\* //p' <<< "$_git_branch"
+      sed -n 's/## \([a-zA-Z0-9_-/]*\).*/\1/p' <<< "$_git_status"
     }
 
     branch_color() {
