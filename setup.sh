@@ -31,8 +31,17 @@ install_vundle () {
   local dir=$HOME/.vim/bundle/Vundle.vim
   if [ ! -d "$dir" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git $dir
-    vim +PluginInstall +qall
   fi
+  vim +PluginInstall +qall
+}
+
+install_tpm () {
+  local dir=$HOME/.tmux/plugins/tpm
+  if [ ! -d "$dir" ]; then
+    echo install tpm
+    git clone https://github.com/tmux-plugins/tpm $dir
+  fi
+  ~/.tmux/plugins/tpm/bin/install_plugins
 }
 
 # Performs backup and creates symlinks
@@ -50,6 +59,7 @@ install () {
   done
 
   install_vundle
+  install_tpm
 }
 
 # Removes symlinks and restores backup

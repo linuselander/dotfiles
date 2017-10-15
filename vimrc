@@ -9,6 +9,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'morhetz/gruvbox'
+Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
@@ -37,8 +38,9 @@ endif
 "}}}
 
 " UI {{{
-let &colorcolumn=join(range(80,999),",")  "Add bg at column 80 and above
-highlight link EndOfBuffer ColorColumn
+"let &colorcolumn=join(range(80,255),",")  "Add bg at column 80 and above
+"highlight link EndOfBuffer ColorColumn
+set colorcolumn=80
 set cursorline                 " Highlight current line
 set relativenumber             " Line numbers originate from cursor position
 set number                     " Current line shows actual line number
@@ -75,11 +77,13 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
 let g:airline#extensions#syntastic#enabled = 1
 set noshowmode                                        " Airline already shows mode
 "}}}
+" Syntastic {{{
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+"}}}
 "}}}
 
 " Mappings {{{
