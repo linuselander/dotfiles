@@ -5,21 +5,7 @@ backup_folder=$(pwd)'/backup'
 
 # If script is executed without parameters we only print help info
 print_help () {
-  echo
-  echo This script will install dotfiles into $HOME
-  echo Installation will backup your existing dotfiles to $backup_folder
-  echo Every time install is run it will begin by trying to uninstall.
-  echo This will guarantee the integrity of the original backups.
-  echo
-  echo '$ ./setup.sh [--install | --uninstall]'
-  echo
-  echo '--install      Begins by running uninstall and then it makes backups'
-  echo '               of all affected files in '$HOME' and stores them in a'
-  echo '               separate folder. Then symlinks are created pointing'
-  echo '               to corresponding files in this folder'
-  echo
-  echo '--uninstall    Removes the symlinks and restores the original files'
-  echo
+  echo "$(<help.txt)"
 }
 
 # Print error message and exits if script is executed from wrong path

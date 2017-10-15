@@ -1,6 +1,6 @@
 set nocompatible
-let mapleader=','                                     " Use , as leader key. Set before plugins load
-filetype off                                          " Turn off before loading plugins
+let mapleader=','              " Use , as leader key. Set before plugins load
+filetype off                   " Turn off before loading plugins
 
 " Load Plugins {{{
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -22,7 +22,7 @@ Plugin 'mxw/vim-jsx'
 call vundle#end()
 "}}}
 
-filetype plugin indent on                             " Turn back on after loading plugins
+filetype plugin indent on      " Turn back on after loading plugins
 
 " Colors {{{
 syntax on
@@ -37,32 +37,33 @@ endif
 "}}}
 
 " UI {{{
-set colorcolumn=120                                   " Add vertical line at 120 chars
-set cursorline                                        " Highlight current line
-set relativenumber                                    " Line numbers originate from cursor position
-set number                                            " Current line shows actual line number
-set foldcolumn=1                                      " Show column for fold markers
-set wrap                                              " Wrap text when wider than window
-set linebreak                                         " Wrap text according to 'breakat' instead of anywhere
-set breakindent                                       " Indent wrapped text to match indentation of current line
-set showbreak=+++                                     " Prefix wrapped text
+let &colorcolumn=join(range(80,999),",")  "Add bg at column 80 and above
+highlight link EndOfBuffer ColorColumn
+set cursorline                 " Highlight current line
+set relativenumber             " Line numbers originate from cursor position
+set number                     " Current line shows actual line number
+set foldcolumn=1               " Show column for fold markers
+set wrap                       " Wrap text when wider than window
+set linebreak                  " Wrap text according to 'breakat' instead of anywhere
+set breakindent                " Indent wrapped text to match indentation of current line
+set showbreak=+++              " Prefix wrapped text
 " }}}
 
 " Behavior {{{
-set foldmethod=syntax                                 " Base folding on current file syntax
-set visualbell                                        " Silent error messages
+set foldmethod=syntax          " Base folding on current file syntax
+set visualbell                 " Silent error messages
 
-set nobackup                                          " Don't write permanent backups when overwriting files
-set noswapfile                                        " Don't create .swp-files
+set nobackup                   " Don't write permanent backups when overwriting files
+set noswapfile                 " Don't create .swp-files
 
-set wildmenu                                          " Use wildmenu for completion in command mode
-set wildignore+=*/node_modules/*                      " Exclude folders from completions
-set path+=**                                          " Allow recursive search for completions
+set wildmenu                   " Use wildmenu for completion in command mode
+set wildignore+=*/node_modules/* " Exclude folders from completions
+set path+=**                   " Allow recursive search for completions
 
 set tabstop=2 expandtab shiftwidth=2 smarttab         " Use 2 spaces for tabs
 set hlsearch
 
-set textwidth=0                                       " Never auto-insert hard line breaks
+set textwidth=0                " Never auto-insert hard line breaks
 " }}}
 
 " Plugins {{{
@@ -96,5 +97,5 @@ nmap <leader>+ <Plug>AirlineSelectNextTab
 " }}}
 
 
-setlocal foldmethod=marker                            " When editing this file use markers for folding
+setlocal foldmethod=marker     " When editing this file use markers for folding
 
