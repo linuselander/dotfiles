@@ -15,6 +15,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'pangloss/vim-javascript'
@@ -101,5 +102,5 @@ nmap <leader>+ <Plug>AirlineSelectNextTab
 " }}}
 
 
-setlocal foldmethod=marker     " When editing this file use markers for folding
+" vim: set foldmethod=marker:
 
