@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files=( "vimrc" "tmux.conf" "eslintrc.json" "dircolors" "bashrc")
+files=( "vimrc" "tmux.conf" "eslintrc.json" "dircolors" "bashrc" "gitconfig" )
 backup_folder=$(pwd)'/backup'
 
 # If script is executed without parameters we only print help info
