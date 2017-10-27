@@ -20,6 +20,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'linuselander/vim-signore'
 
 call vundle#end()
 "}}}
@@ -85,6 +86,18 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "}}}
+" CtrlP {{{
+"let g:ctrlp_user_command = {
+"  \ 'types': {
+"    \ 1: ['.git', 'git -C %s ls-files --cached --exclude-standard --others'],
+"    \ },
+"  \ 'fallback': 'find %s -type f'
+"  \ }
+" }}}
+" Signore {{{
+let g:signore#auto = 1
+let g:signore#use_ctrlp_format = 1
+" }}}
 "}}}
 
 " Mappings {{{
