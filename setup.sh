@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files=( "vimrc" "tmux.conf" "tmuxline.conf" "eslintrc.json" "dircolors" "bashrc" "gitconfig" )
+dotfiles=( "vimrc" "tmux.conf" "tmuxline.conf" "eslintrc.json" "dircolors" "bashrc" "gitconfig" )
 backup_folder=$(pwd)'/backup'
 
 # If script is executed without parameters we only print help info
@@ -44,18 +44,43 @@ install_tpm () {
   ~/.tmux/plugins/tpm/bin/install_plugins
 }
 
+backup_file () {
+  local file=$1
+  if [ -e $file ]; then
+    echo 'Backing up '$file
+    mkdir -p backup && cp -P -n $file $_ && rm $file
+  fi
+}
+
+restore_file () {
+  local source=$1
+  local target=$2
+  if [ -e $source ]; then
+    if [ -L $target ]; then
+      echo 'Removing symlink '$target
+      unlink $target
+    fi
+    echo 'Restoring backup to '$target
+    cp -P -n $source $target && rm $source
+  else
+    echo 'Could not find any backup for '$target
+  fi
+}
+
+create_symlink () {
+  local target=$1
+  local link=$2
+  echo 'Creating symlink to '$target
+  ln -s $target $link
+}
+
 # Performs backup and creates symlinks
 install () {
   for file in $@; do
     dotfile=$HOME'/.'$file
     targetfile=$(pwd)'/'$file
-    if [ -e $dotfile ]
-    then
-      echo 'Backing up '$dotfile
-      mkdir -p backup && cp -P -n $dotfile $_ && rm $dotfile
-    fi
-    echo 'Creating symlink to '$targetfile
-    ln -s $targetfile $dotfile
+    backup_file $dotfile
+    create_symlink $targetfile $dotfile
   done
 
   install_vundle
@@ -67,18 +92,7 @@ uninstall () {
   for file in $@; do
     dotfile=$HOME'/.'$file
     bakfile=$backup_folder'/.'$file
-    if [ -e $bakfile ]
-    then
-      if [ -L $dotfile ]
-      then
-        echo 'Removing symlink '$dotfile
-        unlink $dotfile
-      fi
-      echo 'Restoring backup to '$dotfile
-      cp -P -n $bakfile $dotfile && rm $bakfile
-    else
-      echo 'Could not find any backup for '$dotfile
-    fi
+    restore_file $bakfile $dotfile
   done
 }
 
@@ -87,11 +101,11 @@ then
   verify_runtime_path
   if [ $1 = '--install' ]
   then
-    uninstall "${files[@]}"
-    install "${files[@]}"
+    uninstall "${dotfiles[@]}"
+    install "${dotfiles[@]}"
   elif [ $1 = '--uninstall' ]
   then
-    uninstall "${files[@]}"
+    uninstall "${dotfiles[@]}"
   fi
 else
   print_help
