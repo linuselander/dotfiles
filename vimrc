@@ -14,15 +14,16 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'edkolev/tmuxline.vim'
+"Plugin 'edkolev/tmuxline.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
-"Plugin 'OrangeT/vim-csharp'
-Plugin 'linuselander/vim-signore'
+Plugin 'OrangeT/vim-csharp'
+"Plugin 'linuselander/vim-signore'
+Plugin 'sgur/vim-editorconfig'
 
 call vundle#end()
 "}}}
@@ -74,8 +75,8 @@ set textwidth=0                " Never auto-insert hard line breaks
 
 " Plugins {{{
 " Vim Airline {{{
-"let g:airline_symbols_ascii = 1                       " Use plain chars in Airline UI
-let g:airline_powerline_fonts=1
+let g:airline_symbols_ascii = 1                       " Use plain chars in Airline UI
+"let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
 let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
 let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
@@ -90,16 +91,18 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "}}}
 " CtrlP {{{
-"let g:ctrlp_user_command = {
-"  \ 'types': {
-"    \ 1: ['.git', 'git -C %s ls-files --cached --exclude-standard --others'],
-"    \ },
-"  \ 'fallback': 'find %s -type f'
-"  \ }
+let g:ctrlp_user_command = {
+  \ 'types': {
+    \ 1: ['.git', 'git -C %s ls-files --cached --exclude-standard --others'],
+    \ },
+  \ 'fallback': 'find %s -type f'
+  \ }
 " }}}
 " Signore {{{
 let g:signore#auto = 1
 let g:signore#use_ctrlp_format = 0
+" }}}
+" Vim Csharp {{{
 " }}}
 "}}}
 
