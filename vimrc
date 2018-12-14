@@ -45,6 +45,9 @@ endif
 " UI {{{
 "let &colorcolumn=join(range(80,255),",")  "Add bg at column 80 and above
 "highlight link EndOfBuffer ColorColumn
+let &t_SI.="\e[5 q"            " Set cursor to vertical line in insert mode
+let &t_SR.="\e[4 q"            " Set cursor to horizontal line in replace mode
+let &t_EI.="\e[1 q"            " Set cursor to block line in normal mode
 set colorcolumn=80
 set cursorline                 " Highlight current line
 set relativenumber             " Line numbers originate from cursor position
