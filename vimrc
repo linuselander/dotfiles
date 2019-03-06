@@ -1,34 +1,33 @@
 set nocompatible
 let mapleader=','              " Use , as leader key. Set before plugins load
-filetype off                   " Turn off before loading plugins
 
 " Load Plugins {{{
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'morhetz/gruvbox'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'edkolev/tmuxline.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'OrangeT/vim-csharp'
-"Plugin 'linuselander/vim-signore'
-Plugin 'sgur/vim-editorconfig'
-
-call vundle#end()
+call plug#begin('~/.vim/plugged')
+Plug 'morhetz/gruvbox'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'edkolev/tmuxline.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'OrangeT/vim-csharp'
+Plug 'OmniSharp/omnisharp-vim'
+"Plug 'linuselander/vim-signore'
+Plug 'sgur/vim-editorconfig'
+call plug#end()
 "}}}
-
-filetype plugin indent on      " Turn back on after loading plugins
 
 " Colors {{{
 syntax on

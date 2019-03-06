@@ -27,14 +27,6 @@ verify_runtime_path () {
   fi
 }
 
-install_vundle () {
-  local dir=$HOME/.vim/bundle/Vundle.vim
-  if [ ! -d "$dir" ]; then
-    git clone https://github.com/VundleVim/Vundle.vim.git $dir
-  fi
-  vim +PluginInstall +qall
-}
-
 install_tpm () {
   local dir=$HOME/.tmux/plugins/tpm
   if [ ! -d "$dir" ]; then
@@ -83,7 +75,6 @@ install () {
     create_symlink $targetfile $dotfile
   done
 
-  install_vundle
   install_tpm
 }
 
