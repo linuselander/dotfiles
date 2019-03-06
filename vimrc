@@ -59,6 +59,7 @@ set showbreak=+++              " Prefix wrapped text
 " }}}
 
 " Behavior {{{
+set backspace=indent,eol,start " Expected backspace behavior
 set foldmethod=syntax          " Base folding on current file syntax
 set visualbell                 " Silent error messages
 
@@ -81,6 +82,7 @@ let g:airline_symbols_ascii = 1                       " Use plain chars in Airli
 let g:airline_powerline_fonts=0
 let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
 let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " Show folder if not unique filename
 let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
 let g:airline#extensions#syntastic#enabled = 1
 set noshowmode                                        " Airline already shows mode
