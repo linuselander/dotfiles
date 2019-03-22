@@ -89,7 +89,7 @@ function prompt () {
     fi
 
     branch_name() {
-      sed -n 's/## \([a-zA-Z0-9_-/]*\).*/\1/p' <<< "$_git_status"
+      sed -n 's/## \([-_a-zA-Z0-9/]*\).*/\1/p' <<< "$_git_status"
     }
 
     branch_compared() {
