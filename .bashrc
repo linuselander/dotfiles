@@ -125,9 +125,9 @@ function prompt () {
   
   local __user_and_host="\[\033[01;34m\]\u@\h"
   local __cur_location="\[\033[00;34m\]\w"
-  local __prompt_tail="\[\033[00m\]$"
+  local __prompt_tail="\[\033[00m\]\n$ "
   local __last_color="\[\033[00m\]"
-  PS1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color "
+  PS1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color"
 
 }
 
