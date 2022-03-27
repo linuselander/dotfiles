@@ -8,14 +8,24 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+let g:coc_global_extensions = [
+\ 'coc-json',
+\ 'coc-tsserver',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-eslint',
+\ 'coc-prettier',
+\ 'coc-snippets',
+\ 'coc-simple-react-snippets'
+\ ]
+
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'edkolev/tmuxline.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -24,7 +34,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'OrangeT/vim-csharp'
 Plug 'OmniSharp/omnisharp-vim'
-"Plug 'linuselander/vim-signore'
 Plug 'sgur/vim-editorconfig'
 call plug#end()
 "}}}
@@ -61,6 +70,7 @@ set showbreak=+++              " Prefix wrapped text
 " Behavior {{{
 set backspace=indent,eol,start " Expected backspace behavior
 set foldmethod=syntax          " Base folding on current file syntax
+set foldlevel=10               " Don't fold when buffers open
 set visualbell                 " Silent error messages
 
 set nobackup                   " Don't write permanent backups when overwriting files
@@ -80,15 +90,12 @@ set textwidth=0                " Never auto-insert hard line breaks
 " Vim Airline {{{
 let g:airline_symbols_ascii = 1                       " Use plain chars in Airline UI
 let g:airline_powerline_fonts=0
-let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
-let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " Show folder if not unique filename
-let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
+"let g:airline#extensions#tabline#enabled = 1          " Use top as tabs for buffers
+"let g:airline#extensions#tabline#fnamemod = ':t'      " Show only filename on tabs
+"let g:airline#extensions#tabline#formatter = 'unique_tail_improved' " Show folder if not unique filename
+"let g:airline#extensions#tabline#buffer_idx_mode = 1  " Relative numbering
 let g:airline#extensions#syntastic#enabled = 1
 set noshowmode                                        " Airline already shows mode
-"}}}
-" Tmuxline {{{
-  let g:tmuxline_powerline_separators = 0
 "}}}
 " Syntastic {{{
 let g:syntastic_javascript_checkers = ['eslint']
@@ -104,10 +111,6 @@ let g:ctrlp_user_command = {
     \ },
   \ 'fallback': 'find %s -type f'
   \ }
-" }}}
-" Signore {{{
-let g:signore#auto = 1
-let g:signore#use_ctrlp_format = 0
 " }}}
 " Vim Csharp {{{
 " }}}
@@ -134,22 +137,38 @@ let g:OmniSharp_translate_cygwin_wsl = 1
 "endfunction
 
 " }}}
+" coc.nvim {{{
+set updatetime=300
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <F2> <Plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
+nmap <C-@> :CocAction<CR>
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" }}}
 "}}}
 
 " Mappings {{{
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>- <Plug>AirlineSelectPrevTab
-nmap <leader>+ <Plug>AirlineSelectNextTab
 " }}}
 
 
 " vim: set foldmethod=marker:
+" vim: set foldlevel=0:
 
