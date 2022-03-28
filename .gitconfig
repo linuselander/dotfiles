@@ -9,4 +9,4 @@
   editor = vim
   autocrlf = input
 [include]
-  path = ~/.gitconfig.local
+  path = ~/.gitconfig.user
