@@ -1,13 +1,21 @@
 {
-  "eslint.autoFixOnSave": true,
-  "eslint.filetypes": ["javascript", "javascript.jsx", "javascriptreact", "typescript", "typescriptreact"],
-  "prettier.disableSuccessMessage": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "tsserver.formatOnType": true,
-  "coc.preferences.formatOnType": true
+	"eslint.autoFixOnSave": true,
+	"eslint.filetypes": ["javascript", "javascript.jsx", "javascriptreact", "typescript", "typescriptreact"],
+	"prettier.disableSuccessMessage": true,
+	"coc.preferences.formatOnSaveFiletypes": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"cs"
+	],
+	"tsserver.formatOnType": true,
+	"coc.preferences.formatOnType": true,
+	"languageserver": {
+		"csharp-ls": {
+			"command": "csharp-ls",
+			"filetypes": ["cs"],
+			"rootPatterns": ["*.csproj", ".vim/", ".git/", ".hg/"]
+		}
+	}
 }
