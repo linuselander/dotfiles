@@ -9,6 +9,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -30,7 +31,7 @@ call plug#end()
 
 " Colors {{{
 syntax on
-colorscheme blue
+colorscheme gruvbox
 set background=dark
 if &term =~ '256color'
   " disable Background Color Erase (BCE) so that color schemes
@@ -84,10 +85,10 @@ let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 " }}}
 " coc.nvim {{{
 let g:coc_global_extensions = [
-\ 'coc-tsserver', 
-\ 'coc-snippets', 
-\ 'coc-eslint', 
-\ 'coc-prettier', 
+\ 'coc-tsserver',
+\ 'coc-snippets',
+\ 'coc-eslint',
+\ 'coc-prettier',
 \ 'coc-json',
 \ 'coc-html',
 \ 'coc-css',
