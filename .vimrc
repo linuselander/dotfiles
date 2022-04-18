@@ -26,6 +26,7 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'mattn/emmet-vim'
 call plug#end()
 "}}}
 
@@ -64,7 +65,9 @@ set path+=**                   " Allow recursive search for completions
 
 set tabstop=2 expandtab shiftwidth=2 smarttab         " Use 2 spaces for tabs
 autocmd FileType cs set tabstop=4 shiftwidth=4
+
 set hlsearch
+set incsearch
 
 set textwidth=0                " Never auto-insert hard line breaks
 
@@ -150,6 +153,8 @@ command! ToggleNetrwExplorer call s:toggle_netrw()
 " }}}
 "}}}
 " Mappings {{{
+noremap <ESC> :noh<CR><ESC>    " Make Escape clear search highlighting
+
 " Coc
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
