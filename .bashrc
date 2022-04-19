@@ -212,4 +212,7 @@ done
 
 source $HOME/.keychain/$HOSTNAME-sh
 
-
+function ddg {
+  local q=$(echo "$@" | sed -e "s/ /+/g")
+  w3m -num https://duckduckgo.com/?q="$q"
+}
