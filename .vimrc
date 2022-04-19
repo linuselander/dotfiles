@@ -153,7 +153,8 @@ command! ToggleNetrwExplorer call s:toggle_netrw()
 " }}}
 "}}}
 " Mappings {{{
-noremap <ESC> :noh<CR><ESC>    " Make Escape clear search highlighting
+" Make Escape clear search highlighting
+" nnoremap <ESC> :noh<CR><ESC>
 
 " Coc
 nmap <silent> gd <Plug>(coc-definition)
@@ -168,7 +169,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nnoremap <leader>e :silent ToggleNetrwExplorer<CR>
 
 " fzf
-nmap <C-p> :GFiles<CR>
+nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
 " }}}
 
 " vim: set foldmethod=marker:
