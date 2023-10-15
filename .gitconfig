@@ -6,7 +6,7 @@
 [push]
   default = current
 [core]
-  editor = vim
+	editor = nvim
   autocrlf = input
 [include]
   path = ~/.gitconfig.user
