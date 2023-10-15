@@ -84,7 +84,7 @@ set noshowmode                                        " Airline already shows mo
 let g:OmniSharp_server_use_net6 = 1
 " }}}
 " vimspector {{{
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+let g:vimspector_enable_mappings = 'HUMAN'
 " }}}
 " coc.nvim {{{
 let g:coc_global_extensions = [
