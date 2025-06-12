@@ -115,6 +115,11 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+    tmux new-session -A -s default
+fi
+
 export SSL_CERT_DIR=/home/linus/.aspnet/dev-certs/trust/usr/lib/ssl/certs
 
 export NVM_DIR="$HOME/.nvm"
