@@ -4,6 +4,12 @@ return {
     formatters_by_ft = {
       cs = { "csharpier" },
       python = { "black" },
+      javascript = { "prettier" },
+      javascriptreact = { "prettier" },
+      typescript = { "prettier" },
+      typescriptreact = { "prettier" },
+      html = { "prettier" },
+      css = { "prettier" },
     },
     formatters = {
       csharpier = {
@@ -23,4 +29,3 @@ return {
     })
   end,
 }
-

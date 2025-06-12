@@ -3,9 +3,17 @@ return {
   build = ":TSUpdate",
   config = function()
     require("nvim-treesitter.configs").setup({
-      ensure_installed = { "c_sharp", "lua", "python" },
+      ensure_installed = {
+        "c_sharp",
+        "lua",
+        "python",
+        "javascript",
+        "typescript",
+        "tsx",
+        "html",
+        "css",
+      },
       highlight = { enable = true }
     })
-  end
+  end,
 }
-
