@@ -1,7 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-
-set -o vi
-
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -59,90 +56,15 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-blue="\033[00;34m"
-green="\033[00;32m"
-red="\033[00;31m"
-yellow="\033[00;33m"
-blue_bold="\033[01;34m"
-reset_color="\033[00m"
-
-function prompt () {
-
-  local _use_color="$1"
-
-  function git_prompt () {
-#{{{
-    local _use_color="$1"
-
-    local _git_status=$(git status -s -b --porcelain 2> /dev/null) || return
-
-    if [[ -z "$_git_status" ]]; then
-      return
-    fi
-
-    branch_changes() {
-      grep -c '^[^#].*' <<< "$_git_status"
-    }
-
-    if [ $(branch_changes) -gt 0 ]; then
-      local _is_dirty=yes
-    fi
-
-    branch_name() {
-      sed -n 's/## \([-_a-zA-Z0-9/]*\).*/\1/p' <<< "$_git_status"
-    }
-
-    branch_compared() {
-      sed -n \
-        -e 's/## .*\[\(\(ahead\|behind\) \([0-9]*\)\)\]/\2\3/' \
-        -e 's/ahead/\ \+/p' \
-        -e 's/behind/\ \-/p' <<< "$_git_status"
-    }
-
-    branch_color() {
-      if [ "$_use_color" = yes ]; then
-        if [ "$_is_dirty" = yes ]; then
-          echo -e "$red"
-        else
-          if [[ -z "$(branch_compared)" ]]; then
-            echo -e "$green"
-          else
-            echo -e "$yellow"
-          fi
-        fi
-      fi
-    }
-
-    branch_status() {
-      if [ "$_is_dirty" = yes ]; then
-        echo '*'
-      fi
-    }
-
-    echo "$(branch_color)($(branch_name)$(branch_status)$(branch_compared)) "
-#}}}
-  } 
-  
-  local __user_and_host="\[\033[01;34m\]\u@\h"
-  local __cur_location="\[\033[00;34m\]\w"
-  local __prompt_tail="\[\033[00m\]\n$ "
-  local __last_color="\[\033[00m\]"
-  PS1="$__user_and_host $__cur_location \$(git_prompt $_use_color)$__prompt_tail$__last_color"
-
-}
-
-
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    prompt "$color_prompt"
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
-#configure_prompt
 unset color_prompt force_color_prompt
 
-# if this is an xterm set the title to user@host:dir
-case "$term" in
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
@@ -193,26 +115,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-#if [ -f ./lib/git-prompt.sh ]; then
-#  ./lib/git-prompt.sh
-#  PROMPT_COMMAND='__git_ps1 "$PS1" "\\\$ "'
-#fi
+export SSL_CERT_DIR=/home/linus/.aspnet/dev-certs/trust/usr/lib/ssl/certs
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Adds ssh keys to keychain
-for f in $HOME/.ssh/*; do
-  if [[ $f == *"$HOME/.ssh/id_"* && $f != *".pub" ]]; then
-    /usr/bin/keychain -q --nogui "$f"
-  fi
-done
-
-source $HOME/.keychain/$HOSTNAME-sh
-
-function ddg {
-  local q=$(echo "$@" | sed -e "s/ /+/g")
-  w3m -num https://duckduckgo.com/?q="$q"
-}
