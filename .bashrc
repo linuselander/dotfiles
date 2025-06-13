@@ -47,19 +47,34 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
     else
 	color_prompt=
     fi
 fi
 
+# Git tab completion
+if [ -f /usr/share/bash-completion/completions/git ]; then
+    source /usr/share/bash-completion/completions/git
+fi
+
+# Git prompt
+GIT_PS1=''
+if [ -f ~/.git-contrib/git-prompt.sh ]; then
+    source ~/.git-contrib/git-prompt.sh
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_SHOWSTASHSTATE=1
+    export GIT_PS1_SHOWUNTRACKEDFILES=1
+    export GIT_PS1_SHOWUPSTREAM="auto verbose"
+    # GIT_PS1='$(__git_ps1 " (%s)")'
+    GIT_PS1='$(__git_ps1 " (%s)" | sed -E "s/\|u\+([0-9]+)/ ↑\1/" | sed -E "s/\|u\-([0-9]+)/ ↓\1/" | sed -E "s/\|u\+([0-9]+)\-([0-9]+)/ ↑\1↓\2/")'
+fi
+
+# Color prompt logic — single block!
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]'"$GIT_PS1"'\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w'"$GIT_PS1"'\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -67,8 +82,6 @@ unset color_prompt force_color_prompt
 case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
     ;;
 esac
 
@@ -116,16 +129,17 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Start tmux automatically if not already in one
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     tmux new-session -A -s default
 fi
 
+# Environment variables for SSL and NVM
 export SSL_CERT_DIR=/home/linus/.aspnet/dev-certs/trust/usr/lib/ssl/certs
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
