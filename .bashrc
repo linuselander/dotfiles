@@ -67,7 +67,11 @@ if [ -f ~/.git-contrib/git-prompt.sh ]; then
     export GIT_PS1_SHOWUNTRACKEDFILES=1
     export GIT_PS1_SHOWUPSTREAM="auto verbose"
     # GIT_PS1='$(__git_ps1 " (%s)")'
-    GIT_PS1='$(__git_ps1 " (%s)" | sed -E "s/\|u\+([0-9]+)/ ↑\1/" | sed -E "s/\|u\-([0-9]+)/ ↓\1/" | sed -E "s/\|u\+([0-9]+)\-([0-9]+)/ ↑\1↓\2/")'
+    GIT_PS1='$(__git_ps1 " (%s)" \
+        | sed -E "s/\|u=//" \
+        | sed -E "s/\|u\+([0-9]+)-([0-9]+)/ ↑\1↓\2/" \
+        | sed -E "s/\|u\+([0-9]+)/ ↑\1/" \
+        | sed -E "s/\|u-([0-9]+)/ ↓\1/")'
 fi
 
 # Color prompt logic — single block!
