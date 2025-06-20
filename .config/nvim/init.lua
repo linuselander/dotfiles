@@ -22,11 +22,6 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 
--- vim.opt.swapfile = false
--- vim.opt.backup = false
--- vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
--- vim.opt.undofile = true
-
 vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 
@@ -93,3 +88,35 @@ vim.api.nvim_create_autocmd("BufWinLeave", {
     end
   end
 })
+
+-- === Backup, Swap, and Undo Settings ===
+
+-- Set base path for custom storage
+local nvim_data_path = vim.fn.stdpath("data") -- usually ~/.local/share/nvim
+local backup_dir = nvim_data_path .. "/backups//"
+local swap_dir   = nvim_data_path .. "/swaps//"
+local undo_dir   = nvim_data_path .. "/undos//"
+local session_dir = nvim_data_path .. "/sessions/"
+
+-- Create directories if they don't exist
+local function ensure_dir(path)
+  if vim.fn.isdirectory(path) == 0 then
+    vim.fn.mkdir(path, "p")
+  end
+end
+
+ensure_dir(backup_dir)
+ensure_dir(swap_dir)
+ensure_dir(undo_dir)
+ensure_dir(session_dir) -- Configured in auto-session.lua
+
+-- Enable backups, swaps, and persistent undo
+vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.swapfile = true
+vim.opt.undofile = true
+
+-- Use full-path-style encoded filenames for uniqueness
+vim.opt.backupdir = backup_dir
+vim.opt.directory = swap_dir
+vim.opt.undodir = undo_dir
