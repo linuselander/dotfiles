@@ -4,6 +4,7 @@ return {
   config = function()
     require("mason-tool-installer").setup({
     ensure_installed = {
+      "omnisharp",
       "csharpier",
       "lua-language-server",
       "pyright",

@@ -29,25 +29,14 @@ function M.setup_lsp_servers()
   local config_path = vim.fn.stdpath("config") .. "/lua/lsp/servers"
   local files = vim.fn.glob(config_path .. "/*.lua", false, true)
 
-  -- Ensure neodev is first if present
-  table.sort(files, function(a, b)
-      if a:match("neodev%.lua$") then return true end
-      if b:match("neodev%.lua$") then return false end
-      return a < b
-  end)
-
   for _, file in ipairs(files) do
     local name = vim.fn.fnamemodify(file, ":t:r")
     local ok, opts = pcall(require, "lsp.servers." .. name)
 
     if ok then
-      if name == "neodev" and opts.setup then
-          opts.setup()
-      else
-          opts.on_attach = opts.on_attach or on_attach
-          opts.capabilities = opts.capabilities or capabilities
-          lspconfig[name].setup(opts)
-      end
+      opts.on_attach = opts.on_attach or on_attach
+      opts.capabilities = opts.capabilities or capabilities
+      lspconfig[name].setup(opts)
     else
       vim.notify("Failed to load LSP config for: " .. name, vim.log.levels.ERROR)
     end
