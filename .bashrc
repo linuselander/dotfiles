@@ -74,20 +74,6 @@ if [ -f ~/.git-contrib/git-prompt.sh ]; then
         | sed -E "s/\|u-([0-9]+)/ ↓\1/")'
 fi
 
-# Show Node version only if nvm is active
-node_prompt() {
-  if command -v node &>/dev/null; then
-    local node_path
-    node_path=$(command -v node)
-    if [[ "$node_path" == "$HOME/.nvm/"* ]]; then
-      local version
-      version=$(node -v 2>/dev/null)
-      echo " [$version]"
-    fi
-  fi
-}
-
-
 
 # Color prompt logic — single block!
 if [ "$color_prompt" = yes ]; then
@@ -156,23 +142,19 @@ fi
 # Environment variables for SSL and NVM
 export SSL_CERT_DIR=/home/linus/.aspnet/dev-certs/trust/usr/lib/ssl/certs
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Load Angular CLI autocompletion.
-if command -v ng &> /dev/null; then
+load_angular_completion() {
+  if command -v ng &> /dev/null; then
     # echo "ng is available, setting up autocompletion"
     source <(ng completion script)
-fi  
-
-
-
-
-
-
-
-
+  # else
+    # echo "Angular CLI (ng) is not installed. Skipping autocompletion setup."
+  fi
+}
 
 # Function to find the nearest .nvmrc in parent directories
 find_up_nvmrc() {
@@ -186,47 +168,45 @@ find_up_nvmrc() {
   done
 }
 
-# Track the last directory that had an active .nvmrc
+# Track last active .nvmrc
 export ACTIVE_NVMRC=""
 
-load_nvm_if_needed() {
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# Node version info for prompt — only show if not 'default'
+node_prompt() {
+  if [[ "${USING_DEFAULT_NVMRC:-0}" -eq 0 ]]; then
+    local version
+    version=$(node -v 2>/dev/null)
+    echo " [$version]"
+  fi
 }
 
 maybe_use_nvmrc() {
-  local nvmrc_path=$(find_up_nvmrc)
+  local nvmrc_path
+  nvmrc_path=$(find_up_nvmrc)
 
   if [ -n "$nvmrc_path" ]; then
     if [ "$nvmrc_path" != "$ACTIVE_NVMRC" ]; then
-      load_nvm_if_needed
-      local desired_version=$(< "$nvmrc_path")
-      # echo "Using Node version $desired_version from $(dirname "$nvmrc_path")"
+      local desired_version
+      desired_version=$(< "$nvmrc_path")
       nvm use "$desired_version" > /dev/null
       export ACTIVE_NVMRC="$nvmrc_path"
+      export USING_DEFAULT_NVMRC=0
+      load_angular_completion
     fi
   else
-    if [ -n "$ACTIVE_NVMRC" ]; then
-      # Leaving a project: deactivate nvm and remove from PATH
-      # echo "Leaving .nvmrc project — reverting to system Node"
-      nvm deactivate > /dev/null
-
-      # Remove nvm from PATH completely to reveal system node
-      export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "$HOME/.nvm" | paste -sd ':' -)
-      unset NVM_DIR
-      unset ACTIVE_NVMRC
+    if [ "$ACTIVE_NVMRC" != "default" ]; then
+      nvm use default > /dev/null
+      export ACTIVE_NVMRC="default"
+      export USING_DEFAULT_NVMRC=1
+      load_angular_completion
     fi
   fi
-  if command -v ng &> /dev/null; then
-    # echo "ng is available, setting up autocompletion"
-    source <(ng completion script)
-  fi  
 }
 
-# Override cd to trigger version switching logic
+# Override cd to automatically switch Node version
 cd() {
   builtin cd "$@" && maybe_use_nvmrc
 }
 
-# Run once on shell startup
+# Initial nvm use (in case shell starts in a project folder)
 maybe_use_nvmrc
