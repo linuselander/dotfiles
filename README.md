@@ -9,7 +9,7 @@ sudo apt-get update && \
   sudo apt-get install -y dotnet-sdk-9.0
 ```
 ``` bash
-sudo apt install build-essential 
+sudo apt install build-essential starship
 ```
 
 # Install
